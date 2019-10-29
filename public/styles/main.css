@@ -14,3 +14,8 @@ body {
   box-sizing: border-box;
   font-size: 1.6rem;
 }
+
+.priusSlide {
+  max-height: 600px;
+  max-width: 100%;
+}

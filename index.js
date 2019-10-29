@@ -2,9 +2,19 @@ var express             = require('express'),
     app                 = express(),
     bodyParser          = require('body-parser'),
     methodOverride      = require('method-override'),
-    expressSanitizer    = require('express-sanitizer')
+    expressSanitizer    = require('express-sanitizer'),
+    mongoose            = require("mongoose"),
+    dotenv              = require('dotenv'),
+    Contact             = require("./models/contact")
     ;
+//Routes Requires
+var contactRoutes       = require("./routes/contact");
+// Load environment variables from .env file
+// dotenv.load();
 
+//CONFIG
+var dbUrl = process.env.DATABASEURL || "mongodb://localhost/sellprius";
+mongoose.connect(dbUrl);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());    
@@ -16,7 +26,10 @@ app.use(expressSanitizer());
 app.get('/', function (req, res) {
     res.render('homepage');
     });
-    app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
-    });
+
+app.use("/contact", contactRoutes);
+
+app.listen(3000, function () {
+console.log('Example app listening on port 3000!');
+});
 
