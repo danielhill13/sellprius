@@ -5,16 +5,23 @@ var express = require("express"),
 //CONTACT ROUTES
 //INDEX
 router.get("/", function(req, res){
-    Contact.find({}, function(err, contact){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("contacts", {contact: contact});
-        }
-    });
+    res.render('login')
 });
-
-//NEW
+router.post("/admin", function(req, res){
+    console.log(req.body.validate);
+    if(req.body.validate == process.env.VALIDATOR){
+        Contact.find({}, function(err, contact){
+            if(err){
+                console.log(err);
+            } else {
+                res.render("contacts", {contact: contact});
+            }
+        }); 
+    } else {
+        res.redirect("/");
+    }
+});
+    //NEW
 // router.get("/new", middleware.isLoggedIn, function(req, res){
 //     res.render("destinations/new");
 // });

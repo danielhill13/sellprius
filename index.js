@@ -10,7 +10,7 @@ var express             = require('express'),
 //Routes Requires
 var contactRoutes       = require("./routes/contact");
 // Load environment variables from .env file
-// dotenv.load();
+require('dotenv').config();
 
 //CONFIG
 var dbUrl = process.env.DATABASEURL || "mongodb://localhost/sellprius";
