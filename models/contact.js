@@ -7,7 +7,8 @@ var contactSchema = new mongoose.Schema({
     message: String,
     contactType: String,
     license: String,
-    created: {type: Date, default: Date.now}
+    created: {type: Date, default: Date.now},
+    contacted: String
     
 });
 
