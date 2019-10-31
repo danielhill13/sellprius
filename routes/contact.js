@@ -33,7 +33,7 @@ router.post("/", function(req, res){
     var message = req.sanitize(req.body.contact.message);
     var contactType = req.sanitize(req.body.contact.contactType);
     var license = req.sanitize(req.body.contact.license);
-    var newContact = {email: email, phone: phone, message: message, contactType: contactType, license: license}
+    var newContact = {email: email, phone: phone, message: message, contactType: contactType, license: license, contacted: 'no'}
     console.log(req.body.contact.validate);
     if(req.body.contact.validate == 8){
 
@@ -66,15 +66,22 @@ router.post("/", function(req, res){
 //         });
 //     });
 //UPDATE
-// router.put("/:id", middleware.checkDestinationOwnership, function(req, res){
-//     Destination.findByIdAndUpdate(req.params.id, req.body.destination, function(err, updatedDestination){
-//         if(err){
-//             res.redirect("/destinations");
-//         } else {
-//             res.redirect("/destinations/" + req.params.id);
-//         }
-//     });
-// });
+router.put("/:id/contacted",  function(req, res){
+    Contact.findByIdAndUpdate(req.params.id, {contacted: 'yes'}, function(err, updatedContact){
+        if(err){
+            res.redirect("/");
+        } else {
+            Contact.find({}, function(err, contact){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.render("contacts", {contact: contact});
+                }
+            });         }
+    });
+});
+
+
 //DESTROY
 // router.delete("/:id", middleware.checkDestinationOwnership, function(req, res){
 //     Destination.findByIdAndRemove(req.params.id, function(err){
