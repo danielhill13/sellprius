@@ -8,7 +8,8 @@ var contactSchema = new mongoose.Schema({
     contactType: String,
     license: String,
     created: {type: Date, default: Date.now},
-    contacted: String
+    contacted: String,
+    danielnotes: String
     
 });
 
