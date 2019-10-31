@@ -33,7 +33,7 @@ router.post("/", function(req, res){
     var message = req.sanitize(req.body.contact.message);
     var contactType = req.sanitize(req.body.contact.contactType);
     var license = req.sanitize(req.body.contact.license);
-    var newContact = {email: email, phone: phone, message: message, contactType: contactType, license: license, contacted: 'no'}
+    var newContact = {email: email, phone: phone, message: message, contactType: contactType, license: license, contacted: 'no', danielnotes: "no notes yet"}
     console.log(req.body.contact.validate);
     if(req.body.contact.validate == 8){
 
@@ -67,7 +67,11 @@ router.post("/", function(req, res){
 //     });
 //UPDATE
 router.put("/:id/contacted",  function(req, res){
-    Contact.findByIdAndUpdate(req.params.id, {contacted: 'yes'}, function(err, updatedContact){
+    var updatedContact = {
+        contacted: 'yes',
+        danielnotes: req.body.danielnotes
+    }
+    Contact.findByIdAndUpdate(req.params.id, updatedContact, function(err, updatedContact){
         if(err){
             res.redirect("/");
         } else {
