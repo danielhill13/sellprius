@@ -1,56 +1,71 @@
 <% include header %>
 
+<div class="container">
+    
 <% contact.forEach(function(contact){ %>
     <table class="table table-striped table-sm">
         <thead>
             <tr>
-                <th>What</th>
-                <th>Info</th>
+                <th>What</td>
+                <th>Info</td>
             </tr>
         </thead>
         <tr>
-            <th scope = 'col'>Email</th>
-            <th scope = 'col'><%=contact.email%></th>
+            <td>Email</td>
+            <td><%=contact.email%></td>
         </tr>
         <tr>
-            <th scope = 'col'>Phone</th>
-            <th scope = 'col'><%=contact.phone%></th>
+            <td>Phone</td>
+            <td><%=contact.phone%></td>
         </tr>
         <tr>
-            <th scope = 'col'>Message</th>
-            <th scope = 'col'><%=contact.message%></th>
+            <td>Message</td>
+            <td><%=contact.message%></td>
         </tr>
         <tr>
-            <th scope = 'col'>License checkbox</th>
-            <th scope = 'col'><%=contact.license%></th>
+            <td>License checkbox</td>
+            <td><%=contact.license%></td>
         </tr>
         <tr>
-            <th scope = 'col'>Contact Preference</th>
-            <th scope = 'col'><%=contact.contactType%></th>
+            <td>Contact Preference</td>
+            <td><%=contact.contactType%></td>
         </tr>
         <tr>
-            <th scope = 'col'>Submitted</th>
-            <th scope = 'col'><%=contact.created%></th>
+            <td>Submitted</td>
+            <td><%=contact.created%></td>
         </tr>
         <tr>
-            <th scope = 'col'>Talked with this person?</th>
-            <th scope = 'col'><%=contact.contacted%></th>
+            <td>Contacted</td>
+            <td><%=contact.contacted%></td>
         </tr>
+        <!-- <tr>
+            <td>Id</td>
+            <td><%=contact._id%></td>
+        </tr> -->
         <tr>
-            <th scope = 'col'>Id</th>
-            <th scope = 'col'><%=contact._id%></th>
-        </tr>
-        <tr>
-            <th scope = 'col'>My Notes</th>
-            <th scope = 'col'><%=contact.danielnotes%></th>
+            <td>My Notes</td>
+            <td><%=contact.danielnotes%></td>
         </tr>
     </table>
+<div>
 
     <form  action="/contact/<%=contact._id %>/contacted?_method=PUT" method="POST">
-                <textarea name="danielnotes" rows=3 ></textarea><br>
-                <input type="submit">
-        </form>
-
+        <textarea name="danielnotes" class="form-control" rows=3 cols=50></textarea><br>
+        <div class="form-check mb-2">
+                <input class="form-check-input" name="contactedThePerson" type="checkbox" id="contactedThePerson">
+                <label class="form-check-label" for="driverslicense">  
+                    I reached out to this person
+                </label>
+              </div>
+        <input class="btn btn-lg btn-primary" type="submit">
+    </form>
+    <br>
+    <form action="/contact/<%=contact._id%>?_method=DELETE" method="POST">
+        <button class="btn btn-sm btn-danger">Delete</button>
+    </form>
+</div>
+    <br>
 <%}) %>
 
+</div>
 <% include footer %>

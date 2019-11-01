@@ -8,7 +8,6 @@ router.get("/", function(req, res){
     res.render('login')
 });
 router.post("/admin", function(req, res){
-    console.log(req.body.validate);
     if(req.body.validate == process.env.VALIDATOR){
         Contact.find({}, function(err, contact){
             if(err){
@@ -34,14 +33,13 @@ router.post("/", function(req, res){
     var contactType = req.sanitize(req.body.contact.contactType);
     var license = req.sanitize(req.body.contact.license);
     var newContact = {email: email, phone: phone, message: message, contactType: contactType, license: license, contacted: 'no', danielnotes: "no notes yet"}
-    console.log(req.body.contact.validate);
     if(req.body.contact.validate == 8){
 
         Contact.create(newContact, function(err, newDestination){
             if(err){
                 console.log(err);
             } else {
-                res.send("Thank you, I'll be in touch!");
+                res.send("<h1>Thank you, I will be in touch!</h1><br>" + "<a href='/'>Back to Car Information</a>");
             }
         })
     } else {
@@ -67,14 +65,39 @@ router.post("/", function(req, res){
 //     });
 //UPDATE
 router.put("/:id/contacted",  function(req, res){
-    var updatedContact = {
-        contacted: 'yes',
-        danielnotes: req.body.danielnotes
+    if(req.body.danielnotes.length > 1){
+        var updatedContact = {
+            danielnotes: req.body.danielnotes
+        }
     }
-    Contact.findByIdAndUpdate(req.params.id, updatedContact, function(err, updatedContact){
+    if(req.body.contactedThePerson == 'on'){
+        updatedContact.contacted = 'yes';
+    }
+    if(updatedContact){
+
+        Contact.findByIdAndUpdate(req.params.id, updatedContact, function(err, updatedContact){
+            if(err){
+                res.redirect("/");
+            } else {
+                Contact.find({}, function(err, contact){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        res.render("contacts", {contact: contact});
+                    }
+                });         }
+            });
+        } else{
+            res.send("Need a notes entry to submit, we don't want to overwrite notes with a blank value")
+        }
+        });
+        //DESTROY
+        router.delete("/:id", function(req, res){
+            Contact.findByIdAndRemove(req.params.id, function(err){
         if(err){
-            res.redirect("/");
-        } else {
+            console.log("Issue deleting object");
+            res.redirect("/contact");
+        } else{
             Contact.find({}, function(err, contact){
                 if(err){
                     console.log(err);
@@ -82,20 +105,7 @@ router.put("/:id/contacted",  function(req, res){
                     res.render("contacts", {contact: contact});
                 }
             });         }
-    });
+    })
 });
-
-
-//DESTROY
-// router.delete("/:id", middleware.checkDestinationOwnership, function(req, res){
-//     Destination.findByIdAndRemove(req.params.id, function(err){
-//         if(err){
-//             console.log("Issue deleting object");
-//             res.redirect("/destinations");
-//         } else{
-//             res.redirect("/destinations");
-//         }
-//     })
-// });
 
 module.exports = router;
